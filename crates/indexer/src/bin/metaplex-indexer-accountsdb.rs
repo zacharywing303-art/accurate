@@ -1,5 +1,6 @@
 use indexer_core::{clap, prelude::*};
 use indexer_rabbitmq::accountsdb;
+use metaplex_indexer::accountsdb::Client;
 
 #[derive(Debug, clap::Parser)]
 struct Args {
@@ -25,10 +26,12 @@ fn main() {
              network,
              queue_suffix,
          },
-         client| async move {
+         db| async move {
             if cfg!(debug_assertions) && queue_suffix.is_none() {
                 bail!("Debug builds must specify a RabbitMQ queue suffix!");
             }
+
+            let client = Client::new_rc(db).context("Failed to construct Client")?;
 
             let mut consumer = metaplex_indexer::create_consumer(
                 amqp_url,

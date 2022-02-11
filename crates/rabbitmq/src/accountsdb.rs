@@ -60,7 +60,7 @@ pub enum Network {
 
 impl QueueType {
     /// Construct a new queue configuration given the network this validator is
-    /// connected to.
+    /// connected to and an optional queue suffix
     #[must_use]
     pub fn new(network: Network, id: Option<&str>) -> Self {
         let exchange = format!("{}.accounts", network);
@@ -79,6 +79,7 @@ impl crate::QueueType<Message> for QueueType {
     fn exchange(&self) -> Cow<str> {
         Cow::Borrowed(&self.exchange)
     }
+
     fn queue(&self) -> Cow<str> {
         Cow::Borrowed(&self.queue)
     }
