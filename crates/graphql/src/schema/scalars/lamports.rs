@@ -1,6 +1,7 @@
 use super::prelude::*;
 
 #[derive(Debug, Clone, Copy)]
+#[repr(transparent)]
 pub struct Lamports(u64);
 
 #[graphql_scalar(description = "Lamports")]
@@ -18,6 +19,12 @@ where
 
     fn from_str<'a>(value: ScalarToken<'a>) -> ParseScalarResult<'a, S> {
         <String as ParseScalarValue<S>>::from_str(value)
+    }
+}
+
+impl From<u64> for Lamports {
+    fn from(value: u64) -> Self {
+        Self(value)
     }
 }
 
