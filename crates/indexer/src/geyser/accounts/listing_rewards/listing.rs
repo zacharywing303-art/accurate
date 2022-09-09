@@ -34,9 +34,9 @@ pub(crate) async fn process(client: &Client, key: Pubkey, account_data: Listing)
     client
         .db()
         .run(move |db| {
-            insert_into(reward_centers::table)
+            insert_into(rewards_listings::table)
                 .values(&row)
-                .on_conflict(reward_centers::address)
+                .on_conflict(rewards_listings::address)
                 .do_update()
                 .set(&row)
                 .execute(db)
